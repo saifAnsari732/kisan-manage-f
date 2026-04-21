@@ -1,0 +1,321 @@
+.employee-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.profile-card {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--border-light);
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: white;
+  border: 4px solid var(--primary-100);
+  box-shadow: 0 8px 16px rgba(52, 168, 89, 0.2);
+}
+
+.profile-title h2 {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.employee-id {
+  font-family: 'Courier New', monospace;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.department-badge {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  background: linear-gradient(135deg, var(--accent-500) 0%, var(--accent-600) 100%);
+  color: white;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.profile-details {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+}
+
+.detail-item:hover {
+  background: var(--bg-tertiary);
+  transform: translateX(4px);
+}
+
+.detail-icon {
+  font-size: 1.25rem;
+  color: var(--primary-600);
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.detail-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.attendance-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.attendance-stats {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.attendance-stats h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat-box {
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-present {
+  background: linear-gradient(135deg, var(--success-light) 0%, #d1fae5 100%);
+}
+
+.stat-absent {
+  background: linear-gradient(135deg, var(--error-light) 0%, #fee2e2 100%);
+}
+
+.stat-leave {
+  background: linear-gradient(135deg, var(--warning-light) 0%, #fef3c7 100%);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.stat-present .stat-number {
+  color: var(--success);
+}
+
+.stat-absent .stat-number {
+  color: var(--error);
+}
+
+.stat-leave .stat-number {
+  color: var(--warning);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.recent-attendance {
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.recent-attendance h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0 0 1.5rem 0;
+}
+
+.attendance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.attendance-record {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
+}
+
+.attendance-record:hover {
+  background: var(--bg-tertiary);
+  transform: translateX(4px);
+}
+
+.record-date {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.date-day {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.date-month {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.record-info {
+  flex: 1;
+}
+
+.record-status {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.record-time {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-present {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.status-absent {
+  background: var(--error-light);
+  color: var(--error);
+}
+
+.status-leave {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.status-half-day {
+  background: var(--info-light);
+  color: var(--info);
+}
+
+.no-records {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 2rem;
+  font-style: italic;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-record {
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    width: 100%;
+    text-align: center;
+  }
+}
