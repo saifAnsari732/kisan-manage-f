@@ -1,20 +1,26 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import PrivateRoute from './components/PrivateRoute';
-import Layout from './components/Layout';
-import Login from './pages/Login';
-import HRDashboard from './pages/HR/HRDashboard';
-import HREmployees from './pages/HR/HREmployees';
-import HRAttendance from './pages/HR/HRAttendance';
-import HRAnalytics from './pages/HR/HRAnalytics';
-import EmployeeDashboard from './pages/Employee/EmployeeDashboard';
-import EmployeeProfile from './pages/Employee/EmployeeProfile';
-import EmployeeAttendance from './pages/Employee/EmployeeAttendance';
-import EmployeeDetails from './pages/Employee/EmployeeDetails';
+import PrivateRoute from "./components/PrivateRoute";
+import Layout from "./components/Layout";
+import Login from "./pages/Login";
+import HRDashboard from "./pages/HR/HRDashboard";
+import HREmployees from "./pages/HR/HREmployees";
+import HRAttendance from "./pages/HR/HRAttendance";
+import HRAnalytics from "./pages/HR/HRAnalytics";
+import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
+import EmployeeProfile from "./pages/Employee/EmployeeProfile";
+import EmployeeAttendance from "./pages/Employee/EmployeeAttendance";
+import EmployeeDetails from "./pages/Employee/EmployeeDetails";
+import EmployeeDocument from "./pages/Employee/EmployeeDocuments";
 
 function App() {
   return (
@@ -24,8 +30,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/hr/employees/:id" element={<EmployeeDetails />} />
-             
-            {/* HR Routes */}
+            <Route path="/documents" element={<EmployeeDocument />} />
+            {/* HR Routes */} 
+
             <Route
               path="/hr/dashboard"
               element={
@@ -36,6 +43,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+
             <Route
               path="/hr/employees"
               element={
@@ -46,6 +54,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+
             <Route
               path="/hr/attendance"
               element={
@@ -56,6 +65,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+
             <Route
               path="/hr/analytics"
               element={
@@ -78,6 +88,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+
             <Route
               path="/employee/profile"
               element={
@@ -88,6 +99,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+
             <Route
               path="/employee/attendance"
               element={

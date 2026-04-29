@@ -34,7 +34,7 @@ const HREmployees = () => {
     password: 'password123'
   });
 
-  const departments = ['Sales', 'Marketing', 'Developer', 'Graphic Designer', 'Editor'];
+  const departments = ['Telecaller', 'Marketing', 'Developer', 'Graphic Designer', 'Editor'];
 
   useEffect(() => {
     fetchEmployees();
