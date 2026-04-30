@@ -242,7 +242,7 @@ const HRDashboard = () => {
                   <div className="flex items-center gap-3 flex-1">
                     {/* Avatar */}
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
-                      {emp.name?.charAt(0) || emp.employeeId?.charAt(0)}
+                      <img src={emp.profileImage} className='rounded-full'/>
                     </div>
                     
                     {/* Employee Info */}

@@ -56,24 +56,87 @@ const HREmployees = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (editingEmployee) {
-        await api.put(`/employees/${editingEmployee._id}`, formData);
-        toast.success('Employee updated successfully');
-      } else {
-        await api.post('/employees', formData);
-        toast.success('Employee created successfully');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  // Log the data being sent
+  console.log('Submitting employee data:', formData);
+  
+  // Validate required fields
+  if (!formData.employeeId || !formData.name || !formData.role || 
+      !formData.department || !formData.mobileNumber || !formData.emailId) {
+    toast.error('Please fill all required fields');
+    return;
+  }
+
+  try {
+    if (editingEmployee) {
+      // For edit - remove password if default
+      const updatePayload = { ...formData };
+      if (updatePayload.password === 'password123') {
+        delete updatePayload.password;
       }
-      setShowModal(false);
-      fetchEmployees();
-      resetForm();
-    } catch {
+      
+      const response = await api.put(`/employees/${editingEmployee._id}`, updatePayload);
+      console.log('Update response:', response);
+      
+      if (response.data) {
+        toast.success('Employee updated successfully');
+        setShowModal(false);
+        resetForm();
+        fetchEmployees();
+      }
+    } else {
+      // For create
+      const createPayload = {
+        employeeId: formData.employeeId,
+        name: formData.name,
+        fatherName: formData.fatherName || '',
+        role: formData.role,
+        department: formData.department,
+        headQuarter: formData.headQuarter || '',
+        dateOfJoining: formData.dateOfJoining || null,
+        dateOfBirth: formData.dateOfBirth || null,
+        reportingManager: formData.reportingManager || '',
+        mobileNumber: formData.mobileNumber,
+        emailId: formData.emailId,
+        officialEmailId: formData.officialEmailId || formData.emailId,
+        address: formData.address || '',
+        salary: formData.salary || 0,
+        password: formData.password || 'password123',
+        bankName: formData.bankName || '',
+        accountNo: formData.accountNo || '',
+        ifsc: formData.ifsc || ''
+      };
+      
+      console.log('Sending payload:', createPayload);
+      
+      const response = await api.post('/employees', createPayload);
+      console.log('Create response:', response);
+      
+      if (response.data) {
+        toast.success('Employee created successfully');
+        setShowModal(false);
+        resetForm();
+        fetchEmployees();
+      }
+    }
+  } catch (error) {
+    console.error('Save error:', error);
+    console.error('Error response:', error.response);
+    console.error('Error message:', error.response?.data?.message);
+    
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    } else if (error.response?.data?.errors) {
+      // Handle validation errors
+      const errorMessages = Object.values(error.response.data.errors).join(', ');
+      toast.error(errorMessages);
+    } else {
       toast.error('Error saving employee');
     }
-  };
-
+  }
+};
   const handleEdit = (emp) => {
     setEditingEmployee(emp);
     setFormData({
@@ -258,7 +321,7 @@ const HREmployees = () => {
                   <div className="bg-gradient-to-r from-green-700 to-teal-900 px-5 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                        {emp.name?.charAt(0).toUpperCase()}
+                        <img src={emp.profileImage} className='rounded-full'/>
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-white text-base truncate">{emp.name}</h3>

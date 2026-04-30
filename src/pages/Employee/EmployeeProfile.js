@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import api from '../../utils/api';
-import { toast } from 'react-toastify';
-import { format } from 'date-fns';
-import { 
-  FaEdit, 
-  FaSave, 
-  FaTimes, 
-  FaUser, 
-  FaBriefcase, 
-  FaPhone, 
-  FaEnvelope, 
-  FaMapMarkerAlt, 
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../utils/api";
+import { toast } from "react-toastify";
+import { format } from "date-fns";
+import {
+  FaEdit,
+  FaSave,
+  FaTimes,
+  FaUser,
+  FaBriefcase,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
   FaCalendarAlt,
   FaBuilding,
   FaUserTie,
@@ -28,23 +28,25 @@ import {
   FaDollarSign,
   FaChevronLeft,
   FaChevronRight,
-  FaArrowLeft
-} from 'react-icons/fa';
-import { MdEmail, MdBusinessCenter, MdLocationOn } from 'react-icons/md';
+  FaArrowLeft,
+} from "react-icons/fa";
+import { MdEmail, MdBusinessCenter, MdLocationOn } from "react-icons/md";
 
 const EmployeeProfile = () => {
   const { updateUser } = useAuth();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState('personal');
+  const [activeTab, setActiveTab] = useState("personal");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [image, setImage] = useState(null);
+const [preview, setPreview] = useState(null);
   const [formData, setFormData] = useState({
-    address: '',
-    mobileNumber: '',
-    bankName: '',
-    accountNo: '',
-    ifsc: ''
+    address: "",
+    mobileNumber: "",
+    bankName: "",
+    accountNo: "",
+    ifsc: "",
   });
 
   useEffect(() => {
@@ -53,17 +55,17 @@ const EmployeeProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const { data } = await api.get('/employees/me/profile');
+      const { data } = await api.get("/employees/me/profile");
       setProfile(data);
       setFormData({
-        address: data.address || '',
-        mobileNumber: data.mobileNumber || '',
-        bankName: data.bankName || '',
-        accountNo: data.accountNo || '',
-        ifsc: data.ifsc || ''
+        address: data.address || "",
+        mobileNumber: data.mobileNumber || "",
+        bankName: data.bankName || "",
+        accountNo: data.accountNo || "",
+        ifsc: data.ifsc || "",
       });
     } catch (error) {
-      toast.error('Failed to fetch profile');
+      toast.error("Failed to fetch profile");
     } finally {
       setLoading(false);
     }
@@ -72,95 +74,152 @@ const EmployeeProfile = () => {
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const { data } = await api.put('/employees/me/profile', formData);
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("address", formData.address);
+      formDataToSend.append("mobileNumber", formData.mobileNumber);
+      formDataToSend.append("bankName", formData.bankName);
+      formDataToSend.append("accountNo", formData.accountNo);
+      formDataToSend.append("ifsc", formData.ifsc);
+
+      if (image) {
+        formDataToSend.append("profileImage", image);
+      }
+
+      const { data } = await api.put("/employees/me/profile", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setProfile(data);
       updateUser({ employee: data });
+      setPreview(null);
       setEditing(false);
-      toast.success('Profile updated successfully');
+
+      toast.success("Profile updated successfully");
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to update profile');
+      toast.error(error.response?.data?.message || "Failed to update profile");
     }
   };
 
   const handleCancel = () => {
     setFormData({
-      address: profile.address || '',
-      mobileNumber: profile.mobileNumber || '',
-      bankName: profile.bankName || '',
-      accountNo: profile.accountNo || '',
-      ifsc: profile.ifsc || ''
+      address: profile.address || "",
+      mobileNumber: profile.mobileNumber || "",
+      bankName: profile.bankName || "",
+      accountNo: profile.accountNo || "",
+      ifsc: profile.ifsc || "",
     });
     setEditing(false);
   };
 
   const tabs = [
-    { id: 'personal', label: 'Personal Info', icon: FaUser, mobileLabel: 'Personal' },
-    { id: 'employment', label: 'Employment', icon: FaBriefcase, mobileLabel: 'Work' },
-    { id: 'contact', label: 'Contact', icon: FaPhone, mobileLabel: 'Contact' },
-    { id: 'bank', label: 'Bank Details', icon: FaUniversity, mobileLabel: 'Bank' }
+    {
+      id: "personal",
+      label: "Personal Info",
+      icon: FaUser,
+      mobileLabel: "Personal",
+    },
+    {
+      id: "employment",
+      label: "Employment",
+      icon: FaBriefcase,
+      mobileLabel: "Work",
+    },
+    { id: "contact", label: "Contact", icon: FaPhone, mobileLabel: "Contact" },
+    {
+      id: "bank",
+      label: "Bank Details",
+      icon: FaUniversity,
+      mobileLabel: "Bank",
+    },
   ];
 
-if (loading) {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="text-center px-4">
-        <div className="relative">
-          {/* Enhanced rotating ring */}
-          <div className="animate-spin rounded-full h-14 w-14 sm:h-20 sm:w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 mx-auto shadow-lg"></div>
-          
-          {/* Inner pulsing icon */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="relative">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full animate-pulse"></div>
-              {/* User/Profile Icon */}
-              <svg className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+        <div className="text-center px-4">
+          <div className="relative">
+            {/* Enhanced rotating ring */}
+            <div className="animate-spin rounded-full h-14 w-14 sm:h-20 sm:w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 mx-auto shadow-lg"></div>
+
+            {/* Inner pulsing icon */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="relative">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full animate-pulse"></div>
+                {/* User/Profile Icon */}
+                <svg
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Orbiting dots */}
+            <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-bounce"></div>
+            </div>
+            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+              <div
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500 rounded-full animate-bounce"
+                style={{ animationDelay: "0.3s" }}
+              ></div>
             </div>
           </div>
-          
-          {/* Orbiting dots */}
-          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-bounce"></div>
+
+          {/* Loading text with animated dots */}
+          <div className="mt-5 sm:mt-6 space-y-2">
+            <p className="text-gray-700 font-semibold text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Loading Profile
+            </p>
+            <div className="flex justify-center space-x-1">
+              <div
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0s" }}
+              ></div>
+              <div
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-indigo-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0.15s" }}
+              ></div>
+              <div
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0.3s" }}
+              ></div>
+            </div>
+            <p className="text-gray-500 text-xs sm:text-sm animate-pulse">
+              Please wait while we fetch your data...
+            </p>
           </div>
-          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
-          </div>
-        </div>
-        
-        {/* Loading text with animated dots */}
-        <div className="mt-5 sm:mt-6 space-y-2">
-          <p className="text-gray-700 font-semibold text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Loading Profile
-          </p>
-          <div className="flex justify-center space-x-1">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
-          </div>
-          <p className="text-gray-500 text-xs sm:text-sm animate-pulse">Please wait while we fetch your data...</p>
         </div>
       </div>
-    </div>
-  );
-}
-  const currentTab = tabs.find(tab => tab.id === activeTab);
+    );
+  }
+  const currentTab = tabs.find((tab) => tab.id === activeTab);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-20">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
-        
         {/* Mobile Header with Back Button */}
         <div className="lg:hidden mb-4 flex items-center gap-3">
-          <button 
+          <button
             onClick={() => window.history.back()}
             className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md"
           >
@@ -176,11 +235,15 @@ if (loading) {
         <div className="hidden lg:block mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">Employee Profile</h1>
-              <p className="text-gray-500 mt-1">Manage your personal and professional information</p>
+              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                Employee Profile
+              </h1>
+              <p className="text-gray-500 mt-1">
+                Manage your personal and professional information
+              </p>
             </div>
             {!editing && (
-              <button 
+              <button
                 onClick={() => setEditing(true)}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
@@ -194,7 +257,7 @@ if (loading) {
         {/* Mobile Edit Button */}
         {!editing && (
           <div className="lg:hidden mb-4">
-            <button 
+            <button
               onClick={() => setEditing(true)}
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-xl font-semibold shadow-md"
             >
@@ -206,61 +269,48 @@ if (loading) {
 
         {/* Main Profile Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          
           {/* Profile Header - Mobile Optimized */}
-          <div className="relative">
-            {/* Cover Image */}
-            <div className="h-32 sm:h-40 lg:h-48 bg-gradient-to-r from-green-700 to-teal-900 relative overflow-hidden">
-              <div className="absolute inset-0 bg-black opacity-10"></div>
-              <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 120L60 110C120 100 240 80 360 75C480 70 600 80 720 85C840 90 960 90 1080 85C1200 80 1320 70 1380 65L1440 60V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
-              </svg>
+          <div className="relative flex justify-center lg:justify-start">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-40 lg:h-40 rounded-2xl overflow-hidden border-4 border-white shadow-2xl bg-gray-200">
+              {preview ? (
+                <img src={preview} className="w-full h-full object-cover" />
+              ) : profile?.profileImage ? (
+                <img
+                  src={profile.profileImage}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <span className="text-4xl font-bold text-gray-700">
+                    {profile?.name?.charAt(0)?.toUpperCase()}
+                  </span>
+                </div>
+              )}
             </div>
 
-            {/* Avatar Section - Responsive */}
-            <div className="relative px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col lg:flex-row lg:items-end gap-4 sm:gap-6 -mt-12 sm:-mt-16 mb-4 sm:mb-6">
-                <div className="relative flex justify-center lg:justify-start">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-40 lg:h-40 rounded-2xl bg-gradient-to-r from-teal-700 to-green-800 flex items-center justify-center border-4 border-white shadow-2xl">
-                    <span className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
-                      {profile?.name?.charAt(0)?.toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 border-2 border-white shadow-lg">
-                    <FaCheckCircle className="text-white text-xs sm:text-sm" />
-                  </div>
-                </div>
-                
-                <div className="flex-1 pb-2 sm:pb-4 text-center lg:text-left">
-                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
-                    <div>
-                      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{profile?.name}</h2>
-                      <p className="text-gray-500 font-mono text-xs sm:text-sm mt-1">{profile?.employeeId}</p>
-                      <div className="flex flex-wrap gap-2 mt-2 sm:mt-3 justify-center lg:justify-start">
-                        <span className="px-2 py-1 sm:px-3 sm:py-1 bg-blue-100 text-blue-700 rounded-lg text-xs sm:text-sm font-medium">
-                          {profile?.department}
-                        </span>
-                        <span className="px-2 py-1 sm:px-3 sm:py-1 bg-purple-100 text-purple-700 rounded-lg text-xs sm:text-sm font-medium">
-                          {profile?.role}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start">
-                      <div className="text-center px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-50 rounded-xl">
-                        <p className="text-xl sm:text-2xl font-bold text-gray-900">2</p>
-                        <p className="text-xs text-gray-500">Years</p>
-                      </div>
-                      <div className="text-center px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-50 rounded-xl">
-                        <p className="text-xl sm:text-2xl font-bold text-gray-900">98%</p>
-                        <p className="text-xs text-gray-500">Attendance</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Upload Button (only edit mode) */}
+            {editing && (
+              <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-blue-700">
+                📷
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setImage(file);
+                      setPreview(URL.createObjectURL(file));
+                    }
+                  }}
+                />
+              </label>
+            )}
+
+            <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1 border-2 border-white shadow-lg">
+              <FaCheckCircle className="text-white text-xs sm:text-sm" />
             </div>
           </div>
-
           {/* Mobile Tab Selector - Dropdown */}
           <div className="lg:hidden px-4 pb-3">
             <select
@@ -268,7 +318,7 @@ if (loading) {
               onChange={(e) => setActiveTab(e.target.value)}
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-700 font-medium"
             >
-              {tabs.map(tab => (
+              {tabs.map((tab) => (
                 <option key={tab.id} value={tab.id}>
                   {tab.label}
                 </option>
@@ -279,7 +329,7 @@ if (loading) {
           {/* Desktop Tabs Navigation */}
           <div className="hidden lg:block border-b border-gray-200 px-6 lg:px-8">
             <div className="flex gap-6 overflow-x-auto">
-              {tabs.map(tab => {
+              {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
@@ -287,8 +337,8 @@ if (loading) {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-2 px-4 py-3 font-medium transition-all duration-200 border-b-2 whitespace-nowrap ${
                       activeTab === tab.id
-                        ? 'border-blue-600 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        ? "border-blue-600 text-blue-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                     }`}
                   >
                     <Icon size={16} />
@@ -301,25 +351,34 @@ if (loading) {
 
           {/* Form Content - Mobile Optimized */}
           <form onSubmit={handleSubmit} className="p-4 sm:p-6 lg:p-8">
-            
             {/* Personal Information Tab */}
-            {activeTab === 'personal' && (
+            {activeTab === "personal" && (
               <div className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Full Name</label>
-                    <p className="text-gray-900 font-medium text-sm sm:text-base mt-1 break-words">{profile?.name}</p>
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                      Full Name
+                    </label>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base mt-1 break-words">
+                      {profile?.name}
+                    </p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Father's Name</label>
-                    <p className="text-gray-900 text-sm sm:text-base mt-1 break-words">{profile?.fatherName || 'Not provided'}</p>
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                      Father's Name
+                    </label>
+                    <p className="text-gray-900 text-sm sm:text-base mt-1 break-words">
+                      {profile?.fatherName || "Not provided"}
+                    </p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1">
                       <FaCalendarAlt size={12} /> Date of Birth
                     </label>
                     <p className="text-gray-900 text-sm sm:text-base mt-1">
-                      {profile?.dateOfBirth ? format(new Date(profile.dateOfBirth), 'dd MMM yyyy') : 'N/A'}
+                      {profile?.dateOfBirth
+                        ? format(new Date(profile.dateOfBirth), "dd MMM yyyy")
+                        : "N/A"}
                     </p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
@@ -327,21 +386,25 @@ if (loading) {
                       <FaCalendarCheck size={12} /> Date of Joining
                     </label>
                     <p className="text-gray-900 text-sm sm:text-base mt-1">
-                      {profile?.dateOfJoining ? format(new Date(profile.dateOfJoining), 'dd MMM yyyy') : 'N/A'}
+                      {profile?.dateOfJoining
+                        ? format(new Date(profile.dateOfJoining), "dd MMM yyyy")
+                        : "N/A"}
                     </p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1">
                       <FaRegIdCard size={12} /> Employee ID
                     </label>
-                    <p className="text-gray-900 font-mono text-sm sm:text-base mt-1 break-words">{profile?.employeeId}</p>
+                    <p className="text-gray-900 font-mono text-sm sm:text-base mt-1 break-words">
+                      {profile?.employeeId}
+                    </p>
                   </div>
                   <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
                     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1">
                       <FaDollarSign size={12} /> Salary
                     </label>
                     <p className="text-gray-900 font-bold text-green-600 text-sm sm:text-base mt-1">
-                      ₹{profile?.salary?.toLocaleString() || 'N/A'}
+                      ₹{profile?.salary?.toLocaleString() || "N/A"}
                     </p>
                   </div>
                 </div>
@@ -349,35 +412,51 @@ if (loading) {
             )}
 
             {/* Employment Information Tab */}
-            {activeTab === 'employment' && (
+            {activeTab === "employment" && (
               <div className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 sm:p-5">
                     <FaBuilding className="text-blue-600 text-xl sm:text-2xl mb-2 sm:mb-3" />
-                    <label className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Department</label>
-                    <p className="text-gray-900 text-base sm:text-lg font-semibold mt-1 break-words">{profile?.department}</p>
+                    <label className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+                      Department
+                    </label>
+                    <p className="text-gray-900 text-base sm:text-lg font-semibold mt-1 break-words">
+                      {profile?.department}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 sm:p-5">
                     <FaUserTie className="text-purple-600 text-xl sm:text-2xl mb-2 sm:mb-3" />
-                    <label className="text-xs font-semibold text-purple-600 uppercase tracking-wider">Role</label>
-                    <p className="text-gray-900 text-base sm:text-lg font-semibold mt-1 break-words">{profile?.role}</p>
+                    <label className="text-xs font-semibold text-purple-600 uppercase tracking-wider">
+                      Role
+                    </label>
+                    <p className="text-gray-900 text-base sm:text-lg font-semibold mt-1 break-words">
+                      {profile?.role}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 sm:p-5">
                     <FaGlobe className="text-green-600 text-xl sm:text-2xl mb-2 sm:mb-3" />
-                    <label className="text-xs font-semibold text-green-600 uppercase tracking-wider">Head Quarter</label>
-                    <p className="text-gray-900 font-medium text-sm sm:text-base mt-1 break-words">{profile?.headQuarter || 'Not assigned'}</p>
+                    <label className="text-xs font-semibold text-green-600 uppercase tracking-wider">
+                      Head Quarter
+                    </label>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base mt-1 break-words">
+                      {profile?.headQuarter || "Not assigned"}
+                    </p>
                   </div>
                   <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 sm:p-5">
                     <MdBusinessCenter className="text-orange-600 text-xl sm:text-2xl mb-2 sm:mb-3" />
-                    <label className="text-xs font-semibold text-orange-600 uppercase tracking-wider">Reporting Manager</label>
-                    <p className="text-gray-900 font-medium text-sm sm:text-base mt-1 break-words">{profile?.reportingManager || 'Not assigned'}</p>
+                    <label className="text-xs font-semibold text-orange-600 uppercase tracking-wider">
+                      Reporting Manager
+                    </label>
+                    <p className="text-gray-900 font-medium text-sm sm:text-base mt-1 break-words">
+                      {profile?.reportingManager || "Not assigned"}
+                    </p>
                   </div>
                 </div>
               </div>
             )}
 
             {/* Contact Information Tab */}
-            {activeTab === 'contact' && (
+            {activeTab === "contact" && (
               <div className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 gap-4 sm:gap-6">
                   <div className="bg-gray-50 rounded-xl p-4 sm:p-5">
@@ -385,7 +464,9 @@ if (loading) {
                       <div className="w-9 h-9 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center">
                         <FaMobileAlt className="text-green-600 text-base sm:text-lg" />
                       </div>
-                      <label className="font-semibold text-gray-700 text-sm sm:text-base">Mobile Number</label>
+                      <label className="font-semibold text-gray-700 text-sm sm:text-base">
+                        Mobile Number
+                      </label>
                     </div>
                     {editing ? (
                       <input
@@ -397,36 +478,48 @@ if (loading) {
                         className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                       />
                     ) : (
-                      <p className="text-gray-900 text-base sm:text-lg font-medium break-words">{profile?.mobileNumber}</p>
+                      <p className="text-gray-900 text-base sm:text-lg font-medium break-words">
+                        {profile?.mobileNumber}
+                      </p>
                     )}
                   </div>
-                  
+
                   <div className="bg-gray-50 rounded-xl p-4 sm:p-5">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center">
                         <MdEmail className="text-blue-600 text-base sm:text-lg" />
                       </div>
-                      <label className="font-semibold text-gray-700 text-sm sm:text-base">Personal Email</label>
+                      <label className="font-semibold text-gray-700 text-sm sm:text-base">
+                        Personal Email
+                      </label>
                     </div>
-                    <p className="text-gray-900 text-sm sm:text-base break-words">{profile?.emailId}</p>
+                    <p className="text-gray-900 text-sm sm:text-base break-words">
+                      {profile?.emailId}
+                    </p>
                   </div>
-                  
+
                   <div className="bg-gray-50 rounded-xl p-4 sm:p-5">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-9 h-9 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center">
                         <MdEmail className="text-purple-600 text-base sm:text-lg" />
                       </div>
-                      <label className="font-semibold text-gray-700 text-sm sm:text-base">Official Email</label>
+                      <label className="font-semibold text-gray-700 text-sm sm:text-base">
+                        Official Email
+                      </label>
                     </div>
-                    <p className="text-gray-900 text-sm sm:text-base break-words">{profile?.officialEmailId || 'Not provided'}</p>
+                    <p className="text-gray-900 text-sm sm:text-base break-words">
+                      {profile?.officialEmailId || "Not provided"}
+                    </p>
                   </div>
-                  
+
                   <div className="bg-gray-50 rounded-xl p-4 sm:p-5">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-9 h-9 sm:w-10 sm:h-10 bg-red-100 rounded-full flex items-center justify-center">
                         <FaHome className="text-red-600 text-base sm:text-lg" />
                       </div>
-                      <label className="font-semibold text-gray-700 text-sm sm:text-base">Address</label>
+                      <label className="font-semibold text-gray-700 text-sm sm:text-base">
+                        Address
+                      </label>
                     </div>
                     {editing ? (
                       <textarea
@@ -438,7 +531,9 @@ if (loading) {
                         className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                       />
                     ) : (
-                      <p className="text-gray-900 text-sm sm:text-base leading-relaxed break-words">{profile?.address || 'Not provided'}</p>
+                      <p className="text-gray-900 text-sm sm:text-base leading-relaxed break-words">
+                        {profile?.address || "Not provided"}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -446,7 +541,7 @@ if (loading) {
             )}
 
             {/* Bank Details Tab - Mobile Optimized */}
-            {activeTab === 'bank' && (
+            {activeTab === "bank" && (
               <div className="space-y-4 sm:space-y-6">
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 sm:p-6">
                   <div className="flex items-center gap-3 mb-4 sm:mb-6">
@@ -454,14 +549,20 @@ if (loading) {
                       <FaUniversity className="text-white text-lg sm:text-xl" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900">Bank Account</h3>
-                      <p className="text-gray-500 text-xs sm:text-sm">Salary will be credited here</p>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900">
+                        Bank Account
+                      </h3>
+                      <p className="text-gray-500 text-xs sm:text-sm">
+                        Salary will be credited here
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">Bank Name</label>
+                      <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+                        Bank Name
+                      </label>
                       {editing ? (
                         <input
                           type="text"
@@ -473,11 +574,13 @@ if (loading) {
                         />
                       ) : (
                         <div className="bg-white rounded-lg p-3 border border-gray-200">
-                          <p className="text-gray-900 font-medium text-sm sm:text-base break-words">{profile?.bankName || 'Not provided'}</p>
+                          <p className="text-gray-900 font-medium text-sm sm:text-base break-words">
+                            {profile?.bankName || "Not provided"}
+                          </p>
                         </div>
                       )}
                     </div>
-                    
+
                     <div>
                       <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2 flex items-center gap-1">
                         <FaCreditCard size={14} /> Account Number
@@ -494,12 +597,14 @@ if (loading) {
                       ) : (
                         <div className="bg-white rounded-lg p-3 border border-gray-200">
                           <p className="text-gray-900 font-mono text-sm sm:text-base break-words">
-                            {profile?.accountNo ? `XXXX XXXX XXXX ${profile.accountNo.slice(-4)}` : 'Not provided'}
+                            {profile?.accountNo
+                              ? `XXXX XXXX XXXX ${profile.accountNo.slice(-4)}`
+                              : "Not provided"}
                           </p>
                         </div>
                       )}
                     </div>
-                    
+
                     <div>
                       <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2 flex items-center gap-1">
                         <FaIdCard size={14} /> IFSC Code
@@ -515,7 +620,9 @@ if (loading) {
                         />
                       ) : (
                         <div className="bg-white rounded-lg p-3 border border-gray-200">
-                          <p className="text-gray-900 font-mono uppercase text-sm sm:text-base break-words">{profile?.ifsc || 'Not provided'}</p>
+                          <p className="text-gray-900 font-mono uppercase text-sm sm:text-base break-words">
+                            {profile?.ifsc || "Not provided"}
+                          </p>
                         </div>
                       )}
                     </div>
@@ -525,7 +632,9 @@ if (loading) {
                 {/* Note Card */}
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 sm:p-4">
                   <p className="text-yellow-800 text-xs sm:text-sm">
-                    <strong>Note:</strong> Please ensure your bank details are correct. Salary processing requires accurate bank information.
+                    <strong>Note:</strong> Please ensure your bank details are
+                    correct. Salary processing requires accurate bank
+                    information.
                   </p>
                 </div>
               </div>
@@ -534,15 +643,15 @@ if (loading) {
             {/* Form Actions - Mobile Optimized */}
             {editing && (
               <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={handleCancel}
                   className="inline-flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-2.5 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors"
                 >
                   <FaTimes size={14} />
                   Cancel
                 </button>
-                <button 
+                <button
                   type="submit"
                   className="inline-flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-all shadow-md"
                 >
