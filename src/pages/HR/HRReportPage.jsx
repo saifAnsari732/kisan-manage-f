@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../utils/api";
 import { Link } from "react-router-dom";
+import Navbar from "../../components/Navbar";
 /* ─── Inline styles as JS objects ─────────────────────────────────────────── */
 const S = {
   page: {
@@ -342,7 +343,7 @@ const HRReportPage = () => {
   /* ── Render ── */
   return (
     <div style={S.page}>
-
+    <Navbar/>
       {/* Top bar */}
       <div style={S.topBar}>
         <div style={S.topBarInner}>
@@ -400,7 +401,28 @@ const HRReportPage = () => {
 
         {/* Table */}
         {loading ? (
-          <div style={S.loadingWrap}>Loading employees...</div>
+ <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+    <div className="text-center px-4">
+      <div className="relative">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-emerald-200 border-t-emerald-600 border-r-teal-600 mx-auto shadow-lg"></div>
+        
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <svg className="w-6 h-6 text-emerald-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+      </div>
+      
+      <div className="mt-5">
+        <p className="text-gray-700 font-semibold">HR Report Analytics</p>
+        <div className="flex justify-center space-x-1 mt-2">
+          <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full animate-bounce"></div>
+          <div className="w-1.5 h-1.5 bg-teal-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-1.5 h-1.5 bg-emerald-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+      </div>
+    </div>
+  </div>
         ) : (
           <div style={S.tableCard}>
             <table style={S.table}>

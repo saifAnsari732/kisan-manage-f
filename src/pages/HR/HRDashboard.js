@@ -73,12 +73,39 @@ const HRDashboard = () => {
   );
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+  return (
+    <div className="flex items-center justify-center min-h-[60vh] bg-gradient-to-br from-gray-50 to-blue-50">
+      <div className="text-center px-4">
+        <div className="relative">
+          {/* Main spinner */}
+          <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 border-4 border-green-200 border-t-green-600 border-r-emerald-500 mx-auto shadow-lg"></div>
+          
+          {/* Dashboard icon inside */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <svg className="w-6 h-6 sm:w-7 sm:h-7 text-green-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          </div>
+          
+          {/* Pulse effect */}
+          <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-green-400"></div>
+        </div>
+        
+        <div className="mt-5 space-y-2">
+          <p className="text-gray-700 font-semibold text-base sm:text-lg">
+            Loading HR Dashboard
+          </p>
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+            <div className="w-2 h-2 bg-green-600 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+          </div>
+          <p className="text-gray-500 text-xs sm:text-sm">Fetching employee data, attendance & analytics...</p>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">

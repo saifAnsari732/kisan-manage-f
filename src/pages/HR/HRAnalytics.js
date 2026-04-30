@@ -70,16 +70,34 @@ const HRAnalytics = () => {
     return departmentStats.reduce((max, dept) => dept.totalSalary > max.totalSalary ? dept : max, departmentStats[0]);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading analytics data...</p>
+if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="text-center px-4">
+        <div className="relative">
+          {/* Rotating ring */}
+          <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 mx-auto shadow-lg"></div>
+          
+          {/* Analytics icon inside */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <svg className="w-6 h-6 sm:w-7 sm:h-7 text-blue-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
         </div>
+        
+        <p className="mt-4 text-gray-700 font-semibold text-sm sm:text-base">
+          Loading analytics data
+          <span className="inline-flex ml-1">
+            <span className="animate-bounce">.</span>
+            <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+            <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+          </span>
+        </p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   const totalEmployees = getTotalEmployees();
   const totalSalary = getTotalSalary();

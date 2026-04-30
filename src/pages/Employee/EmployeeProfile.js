@@ -108,22 +108,50 @@ const EmployeeProfile = () => {
     { id: 'bank', label: 'Bank Details', icon: FaUniversity, mobileLabel: 'Bank' }
   ];
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="text-center px-4">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-blue-600 mx-auto"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-600 rounded-full"></div>
+if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="text-center px-4">
+        <div className="relative">
+          {/* Enhanced rotating ring */}
+          <div className="animate-spin rounded-full h-14 w-14 sm:h-20 sm:w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 mx-auto shadow-lg"></div>
+          
+          {/* Inner pulsing icon */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="relative">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full animate-pulse"></div>
+              {/* User/Profile Icon */}
+              <svg className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
             </div>
           </div>
-          <p className="text-gray-600 mt-4 text-sm sm:text-base font-medium">Loading profile...</p>
+          
+          {/* Orbiting dots */}
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-bounce"></div>
+          </div>
+          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+          </div>
+        </div>
+        
+        {/* Loading text with animated dots */}
+        <div className="mt-5 sm:mt-6 space-y-2">
+          <p className="text-gray-700 font-semibold text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Loading Profile
+          </p>
+          <div className="flex justify-center space-x-1">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+          </div>
+          <p className="text-gray-500 text-xs sm:text-sm animate-pulse">Please wait while we fetch your data...</p>
         </div>
       </div>
-    );
-  }
-
+    </div>
+  );
+}
   const currentTab = tabs.find(tab => tab.id === activeTab);
 
   return (

@@ -101,21 +101,47 @@ const EmployeeAttendance = () => {
     });
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="text-center">
+        {/* Animated Icon Container */}
+        <div className="relative">
+          {/* Outer rotating ring */}
+          <div className="animate-spin rounded-full h-20 w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 shadow-lg mx-auto"></div>
+          
+          {/* Inner pulsing circle */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full animate-pulse shadow-md"></div>
+              {/* Calendar icon inside */}
+              <svg className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
             </div>
           </div>
-          <p className="text-gray-600 mt-4 font-medium">Loading attendance records...</p>
+          
+          {/* Orbiting dots */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -mt-2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+          </div>
+        </div>
+        
+        {/* Loading text with animated dots */}
+        <div className="mt-6 space-y-2">
+          <p className="text-gray-700 font-semibold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Loading attendance records
+          </p>
+          <div className="flex justify-center space-x-1">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+          </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   const stats = getAttendanceStats();
   const calendarDays = generateCalendarDays();

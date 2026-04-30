@@ -71,21 +71,57 @@ const EmployeeDashboard = () => {
     return stats;
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+ if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="text-center">
+        {/* Animated Dashboard Icon */}
+        <div className="relative">
+          {/* Outer rotating ring */}
+          <div className="animate-spin rounded-full h-20 w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 mx-auto shadow-lg"></div>
+          
+          {/* Inner pulsing icon */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="relative">
+              {/* Background circle */}
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full animate-pulse shadow-md"></div>
+              
+              {/* Dashboard Icon */}
+              <svg className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
             </div>
           </div>
-          <p className="text-gray-600 mt-4 font-medium">Loading dashboard...</p>
+          
+          {/* Orbiting dots */}
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+          </div>
+          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+          </div>
+        </div>
+        
+        {/* Loading text with gradient and animated dots */}
+        <div className="mt-6 space-y-3">
+          <p className="text-gray-700 font-semibold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Loading Dashboard
+          </p>
+          
+          {/* Animated dots */}
+          <div className="flex justify-center space-x-2">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+            <div className="w-2 h-2 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+            <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+          </div>
+          
+          {/* Subtle loading message */}
+          <p className="text-gray-500 text-sm animate-pulse">Please wait while we fetch your data...</p>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   const stats = getAttendanceStats();
 

@@ -145,15 +145,38 @@ const HREmployees = () => {
     return colors[dept] || 'bg-gray-100 text-gray-700';
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-gray-600">Loading employees...</p>
+if (loading) return (
+  <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="text-center px-4">
+      <div className="relative">
+        {/* Enhanced spinner with gradient */}
+        <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 border-4 border-blue-200 border-t-blue-600 border-r-purple-600 mx-auto shadow-lg"></div>
+        
+        {/* Employee icon inside */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <svg className="w-6 h-6 sm:w-7 sm:h-7 text-blue-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+        
+        {/* Pulsing rings */}
+        <div className="absolute inset-0 rounded-full animate-ping opacity-20 bg-blue-400"></div>
+      </div>
+      
+      <div className="mt-5 space-y-2">
+        <p className="text-gray-700 font-semibold text-base sm:text-lg">
+          Loading Employees
+        </p>
+        <div className="flex justify-center space-x-1">
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+        </div>
+        <p className="text-gray-500 text-xs sm:text-sm animate-pulse">Fetching employee records...</p>
       </div>
     </div>
-  );
-
+  </div>
+);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       {/* Main Container - Responsive padding */}

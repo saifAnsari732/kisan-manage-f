@@ -55,13 +55,31 @@ const EmployeeDetails = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+if (loading) {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="text-center">
+        <div className="relative">
+          {/* Rotating ring */}
+          <div className="w-16 h-16 border-4 border-green-200 border-t-green-600 border-r-emerald-500 rounded-full animate-spin mx-auto"></div>
+          
+          {/* Pulsing employee icon */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <svg className="w-7 h-7 text-green-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          
+          {/* Orbiting dots */}
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
+          </div>
+        </div>
+        <p className="mt-4 text-gray-600 font-medium">Loading employee details...</p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (!employee) {
     return (
