@@ -260,3 +260,18 @@ input, textarea, select {
 .Toastify__toast--info {
   background: var(--info);
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}
