@@ -12,13 +12,15 @@
     "date-fns": "^2.30.0",
     "react-icons": "^4.10.1"
   },
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "vercel-build": "chmod +x node_modules/.bin/react-scripts && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "vercel-build": "react-scripts build"
+    "eject": "react-scripts eject"
   },
+
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
