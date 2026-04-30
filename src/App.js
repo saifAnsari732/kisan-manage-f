@@ -111,8 +111,6 @@ function App() {
               }
             />
 
-            {/* Default redirect */}
-            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
 
           <ToastContainer
