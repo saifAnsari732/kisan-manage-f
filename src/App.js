@@ -28,7 +28,7 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/hr/employees/:id" element={<EmployeeDetails />} />
             <Route path="/documents" element={<EmployeeDocument />} />
             {/* HR Routes */} 
