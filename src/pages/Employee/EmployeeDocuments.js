@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import Navbar from "../../components/Navbar";
+import { toast } from "react-toastify";
 
 const EmployeeDocuments = () => {
   const [files, setFiles] = useState([]);
@@ -38,8 +39,7 @@ const EmployeeDocuments = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      alert("Uploaded Successfully");
+toast.success("Document Uploaded Successfull")
       setFiles([]);
       fetchDocs();
     } catch (err) {
