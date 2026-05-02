@@ -237,7 +237,7 @@ const handleSubmit = async (e) => {
           </div>
 
           {/* Stats Cards - Fully visible */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 px-10">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border border-blue-200 shadow-sm">
               <div className="flex items-center justify-between">
                 <p className="text-blue-600 text-xs font-semibold uppercase tracking-wide">Total</p>
@@ -307,13 +307,13 @@ const handleSubmit = async (e) => {
         </div>
 
         {/* Employees Grid - Responsive cards with complete content */}
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-8xl px-8">
           {filteredEmployees.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
               <p className="text-gray-400 text-base">No employees found</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {filteredEmployees.map(emp => (
                 <div key={emp._id} className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
                   
@@ -360,13 +360,13 @@ const handleSubmit = async (e) => {
                   <div className="flex gap-3 p-4 bg-gray-50 border-t border-gray-100">
                     <button 
                       onClick={() => handleEdit(emp)} 
-                      className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 py-2.5 bg-blue-800 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
                     >
                       <FaEdit size={13} /> Edit
                     </button>
                     <button 
                       onClick={() => handleDelete(emp._id)} 
-                      className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 py-2.5 bg-red-800 hover:bg-red-700 text-white rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2"
                     >
                       <FaTrash size={13} /> Delete
                     </button>

@@ -22,6 +22,7 @@ import EmployeeAttendance from "./pages/Employee/EmployeeAttendance";
 import EmployeeDetails from "./pages/Employee/EmployeeDetails";
 import EmployeeDocument from "./pages/Employee/EmployeeDocuments";
 import HRReportPage from "./pages/HR/HRReportPage";
+import HRProfile from "./pages/HR/HRProfile ";
 function App() {
   return (
     <AuthProvider>
@@ -33,6 +34,7 @@ function App() {
             <Route path="/documents" element={<EmployeeDocument />} />
             {/* HR Routes */} 
              <Route path="/hr/reports" element={<HRReportPage />} />
+             <Route path="/hr/profile" element={<HRProfile />} />
             <Route
               path="/hr/dashboard"
               element={

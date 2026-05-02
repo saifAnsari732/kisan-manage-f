@@ -237,7 +237,7 @@ const HRReportPage = () => {
                           className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
                           style={{ backgroundColor: avatarColor }}
                         >
-                          {getInitials(emp.name)}
+                         <img src={emp.profileImage} alt="" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-slate-800">{emp.name}</h3>
@@ -329,7 +329,7 @@ const HRReportPage = () => {
                               className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs"
                               style={{ backgroundColor: avatarColor }}
                             >
-                              {getInitials(emp.name)}
+                              <img src={emp.profileImage} alt="" />
                             </div>
                             <div>
                               <p className="font-medium text-slate-800">{emp.name}</p>
