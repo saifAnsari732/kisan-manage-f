@@ -42,7 +42,7 @@ const EmployeeDetails = () => {
       const response = await api.get(`/employees/${id}`);
       setEmployee(response.data);
     } catch (error) {
-      toast.error('Failed to fetch employee details');
+      // toast.error('Failed to fetch employee details');
       navigate('/hr/employees');
     } finally {
       setLoading(false);
