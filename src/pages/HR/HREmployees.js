@@ -21,7 +21,7 @@ const HREmployees = () => {
     employeeId: '', name: '', fatherName: '', role: '', department: '',
     headQuarter: '', dateOfJoining: '', dateOfBirth: '', reportingManager: '',
     mobileNumber: '', emailId: '', officialEmailId: '', address: '',
-    salary: '', password: 'password123', bankName: '', accountNo: '', ifsc: ''
+    salary: '', password: 'password123', bankName: '', accountNo: '', ifsc: '',adharNo:'',panNo:''
   });
 
   const departments = ['all', 'Editor', 'HR', 'Telecaller', 'Marketing', 'SocialMedia', 'GraphicsDesigner'];
@@ -145,7 +145,9 @@ const handleSubmit = async (e) => {
       dateOfBirth: emp.dateOfBirth ? format(new Date(emp.dateOfBirth), 'yyyy-MM-dd') : '',
       bankName: emp.bankName || '',
       accountNo: emp.accountNo || '',
-      ifsc: emp.ifsc || ''
+      ifsc: emp.ifsc || '',
+      adharNo: emp.adharNo || '',
+      panNo: emp.panNo || ''
     });
     setShowModal(true);
   };
@@ -168,7 +170,7 @@ const handleSubmit = async (e) => {
       employeeId: '', name: '', fatherName: '', role: '', department: '',
       headQuarter: '', dateOfJoining: '', dateOfBirth: '', reportingManager: '',
       mobileNumber: '', emailId: '', officialEmailId: '', address: '',
-      salary: '', password: 'password123', bankName: '', accountNo: '', ifsc: ''
+      salary: '', password: 'password123', bankName: '', accountNo: '', ifsc: '',panNo:'',adharNo:''
     });
   };
 
@@ -530,7 +532,7 @@ const handleSubmit = async (e) => {
                 {/* Bank Details Section */}
                 <div className="bg-gray-50 rounded-xl p-4">
                   <h3 className="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                    <FaUniversity className="text-green-600" /> Bank Account Details
+                    <FaUniversity className="text-green-600" /> Bank Account Details & Documents
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input 
@@ -557,8 +559,25 @@ const handleSubmit = async (e) => {
                       value={formData.ifsc} 
                       onChange={handleInputChange} 
                     />
+                    <input 
+                      type="text"
+                      name="adharNo" 
+                      placeholder="AADHAR CARD NO" 
+                      className="input-field" 
+                      value={formData.adharNo} 
+                      onChange={handleInputChange} 
+                    />
+                    <input 
+                      type="text"
+                      name="panNo" 
+                      placeholder="PAN CARD NO" 
+                      className="input-field" 
+                      value={formData.panNo} 
+                      onChange={handleInputChange} 
+                    />
                   </div>
                 </div>
+              
 
                 {/* Form Actions */}
                 <div className="flex gap-3 pt-3">
